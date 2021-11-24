@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using Bookish.Models;
 using Dapper;
@@ -9,14 +8,14 @@ namespace Bookish.DbClients
 {
     public static class UserDbClient
     {
-        public static List<User> GetAllUsers(SqlConnection conn)
+        public static List<User> GetAllUsers()
         {
-            return conn.Query<User>("SELECT * FROM Users;").ToList();
+            return Database.Instance.Connection.Query<User>("SELECT * FROM Users;").ToList();
         }
 
-        public static User GetAnUser(SqlConnection conn, string username)
+        public static User GetAnUser(string username)
         {
-            var users = conn.Query<User>("SELECT * FROM Users WHERE username = @username;", new { username }).ToList();
+            var users = Database.Instance.Connection.Query<User>("SELECT * FROM Users WHERE username = @username;", new { username }).ToList();
 
             try {
                 return users.First();
@@ -26,9 +25,9 @@ namespace Bookish.DbClients
             }
         }
 
-        public static void InsertUser(SqlConnection conn, User user)
+        public static void InsertUser(User user)
         {
-            conn.Execute("INSERT INTO Users (username, pw_hash) VALUES (@Username, @Pw_hash)", user);
+            Database.Instance.Connection.Execute("INSERT INTO Users (username, pw_hash) VALUES (@Username, @Pw_hash)", user);
         }
     }
 

@@ -1,13 +1,13 @@
-namespace Authorish.Models
+namespace Bookish.Models
 {
     public class Author
     {
-        public int? id { get; set; }
-        public string Name { get; set; }
 
         public Author(string name)
         {
             Name = name;
         }
+        public int? id { get; set; }
+        public string Name { get; set; }
     }
 }

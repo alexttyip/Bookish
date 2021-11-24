@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using Bookish.Models;
 using Dapper;
@@ -8,19 +7,19 @@ namespace Bookish.DbClients
 {
     public static class BookDbClient
     {
-        public static List<Book> GetAllBooks(SqlConnection conn)
+        public static List<Book> GetAllBooks()
         {
-            return conn.Query<Book>("SELECT * FROM Books;").ToList();
+            return Database.Instance.Connection.Query<Book>("SELECT * FROM Books;").ToList();
         }
 
-        public static Book GetABook(SqlConnection conn, int id)
+        public static Book GetABook(int id)
         {
-            return conn.Query<Book>("SELECT * FROM Books WHERE id = @id;", new { id }).First();
+            return Database.Instance.Connection.Query<Book>("SELECT * FROM Books WHERE id = @id;", new { id }).First();
         }
 
-        public static void InsertBook(SqlConnection conn, Book book)
+        public static void InsertBook(Book book)
         {
-            conn.Execute("INSERT INTO Books (title, ISBN) VALUES (@Title, @Isbn)", book);
+            Database.Instance.Connection.Execute("INSERT INTO Books (title, ISBN) VALUES (@Title, @Isbn)", book);
         }
     }
 }

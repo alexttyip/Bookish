@@ -13,9 +13,7 @@ namespace Bookish
 
             // Convert byte array to a string   
             var builder = new StringBuilder();
-            foreach(var t in bytes) {
-                builder.Append(t.ToString("x2"));
-            }
+            foreach(var t in bytes) builder.Append(t.ToString("x2"));
             return builder.ToString();
         }
     }

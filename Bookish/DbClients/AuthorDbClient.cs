@@ -1,26 +1,25 @@
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using Authorish.Models;
+using Bookish.Models;
 using Dapper;
 
 namespace Bookish.DbClients
 {
     public static class AuthorDbClient
     {
-        public static List<Author> GetAllAuthors(SqlConnection conn)
+        public static List<Author> GetAllAuthors()
         {
-            return conn.Query<Author>("SELECT * FROM Authors;").ToList();
+            return Database.Instance.Connection.Query<Author>("SELECT * FROM Authors;").ToList();
         }
 
-        public static Author GetAnAuthor(SqlConnection conn, int id)
+        public static Author GetAnAuthor(int id)
         {
-            return conn.Query<Author>("SELECT * FROM Authors WHERE id = @id;", new { id }).First();
+            return Database.Instance.Connection.Query<Author>("SELECT * FROM Authors WHERE id = @id;", new { id }).First();
         }
 
-        public static void InsertAuthor(SqlConnection conn, Author author)
+        public static void InsertAuthor(Author author)
         {
-            conn.Execute("INSERT INTO Authors (name) VALUES (@Name)", author);
+            Database.Instance.Connection.Execute("INSERT INTO Authors (name) VALUES (@Name)", author);
         }
     }
 }

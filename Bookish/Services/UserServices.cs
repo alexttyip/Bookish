@@ -1,5 +1,4 @@
 using System;
-using System.Data.SqlClient;
 using Bookish.DbClients;
 using Bookish.Models;
 
@@ -8,7 +7,7 @@ namespace Bookish.Services
     public class UserServices
     {
 
-        public static bool AuthenticateInputUser(SqlConnection conn)
+        public static bool AuthenticateInputUser()
         {
             var username = Console.ReadLine();
             var password = Console.ReadLine();
@@ -17,13 +16,13 @@ namespace Bookish.Services
 
             var inputUser = new User(username, pwHash);
 
-           return AuthenticateUser(conn, inputUser);
+            return AuthenticateUser(inputUser);
         }
-        public static bool AuthenticateUser(SqlConnection conn, User user)
+        public static bool AuthenticateUser(User user)
         {
             User fetchedUser;
             try {
-                fetchedUser = UserDbClient.GetAnUser(conn, user.Username);
+                fetchedUser = UserDbClient.GetAnUser(user.Username);
             }
             catch (UserDoesNotExistException) {
                 return false;
