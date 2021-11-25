@@ -12,6 +12,11 @@ namespace Bookish.DbClients
             return Database.Instance.Connection.Query<Book>("SELECT * FROM Books;").ToList();
         }
 
+        public static List<Book> GetAllBooksOrdered()
+        {
+            return Database.Instance.Connection.Query<Book>("SELECT * FROM Books ORDER BY title ASC;").ToList();
+        }
+
         public static Book GetABook(int id)
         {
             return Database.Instance.Connection.Query<Book>("SELECT * FROM Books WHERE id = @id;", new { id }).First();

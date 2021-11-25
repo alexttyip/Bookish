@@ -7,6 +7,10 @@ namespace Bookish
     {
         private static void Main(string[] args)
         {
+            BookServices.ShowAllBooksOrdered();
+
+            Console.Out.WriteLine();
+
             var userServices = UserServices.Instance;
 
             userServices.AuthenticateInputUser();
