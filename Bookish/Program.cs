@@ -7,7 +7,22 @@ namespace Bookish
     {
         private static void Main(string[] args)
         {
-            Console.Out.WriteLine(UserServices.AuthenticateInputUser().ToString());
+            var userServices = UserServices.Instance;
+
+            userServices.AuthenticateInputUser();
+
+            if (userServices.IsUserLoggedIn()) {
+                Console.Out.WriteLine("You're logged in!");
+
+                var loanedBooks = userServices.GetLoanedBooks();
+                foreach(var loanedBook in loanedBooks) {
+                    Console.Out.WriteLine(loanedBook.Title);
+                    Console.Out.WriteLine(loanedBook.Due);
+                }
+            }
+            else {
+                Console.Out.WriteLine("Bad luck");
+            }
         }
     }
 }

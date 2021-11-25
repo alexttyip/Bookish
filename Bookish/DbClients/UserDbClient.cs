@@ -13,7 +13,7 @@ namespace Bookish.DbClients
             return Database.Instance.Connection.Query<User>("SELECT * FROM Users;").ToList();
         }
 
-        public static User GetAnUser(string username)
+        public static User GetAUser(string username)
         {
             var users = Database.Instance.Connection.Query<User>("SELECT * FROM Users WHERE username = @username;", new { username }).ToList();
 
@@ -28,6 +28,18 @@ namespace Bookish.DbClients
         public static void InsertUser(User user)
         {
             Database.Instance.Connection.Execute("INSERT INTO Users (username, pw_hash) VALUES (@Username, @Pw_hash)", user);
+        }
+
+        public static List<LoanedBook> GetBooksLoanedByUser(User user)
+        {
+            const string query = @"
+                    SELECT B.*, Bs.due
+                    from Books B
+                             join Book_statuses Bs
+                                  on B.id = Bs.book_fk AND Bs.user_fk = 1
+              ";
+
+            return Database.Instance.Connection.Query<LoanedBook>(query).ToList();
         }
     }
 

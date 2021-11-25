@@ -15,5 +15,10 @@ namespace Bookish.Models
 
         // ReSharper disable once InconsistentNaming
         public string Pw_hash { get; set; }
+
+        public User Copy()
+        {
+            return new User(Username, Pw_hash);
+        }
     }
 }
