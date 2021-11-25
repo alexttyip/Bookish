@@ -1,7 +1,7 @@
 using System;
 using System.Data.SqlClient;
 
-namespace Bookish
+namespace Bookish.DataAccess
 {
     public class Database
     {

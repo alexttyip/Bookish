@@ -1,6 +1,6 @@
 using System;
 
-namespace Bookish.Models
+namespace Bookish.DataAccess.Models
 {
     public class Book
     {
@@ -14,6 +14,11 @@ namespace Bookish.Models
         public int? Id { get; set; }
         public string Title { get; set; }
         public string Isbn { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Title} - {Isbn}";
+        }
     }
 
     public class LoanedBook : Book
@@ -30,6 +35,11 @@ namespace Bookish.Models
         public bool IsBookOverdue()
         {
             return DateTime.Now > Due;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $" - {Due}";
         }
     }
 }

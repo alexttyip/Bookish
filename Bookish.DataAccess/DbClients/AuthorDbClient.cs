@@ -1,12 +1,21 @@
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
-using Bookish.Models;
+using Bookish.DataAccess.Models;
 using Dapper;
 
-namespace Bookish.DbClients
+namespace Bookish.DataAccess.DbClients
 {
-    public static class AuthorDbClient
+    public class AuthorDbClient
     {
+
+        private SqlConnection _conn;
+
+        public AuthorDbClient(SqlConnection conn)
+        {
+            _conn = conn;
+        }
+
         public static List<Author> GetAllAuthors()
         {
             return Database.Instance.Connection.Query<Author>("SELECT * FROM Authors;").ToList();

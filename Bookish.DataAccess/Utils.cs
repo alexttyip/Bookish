@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Bookish
+namespace Bookish.DataAccess
 {
     public static class Utils
     {

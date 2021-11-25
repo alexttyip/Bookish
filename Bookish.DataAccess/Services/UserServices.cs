@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Bookish.DbClients;
-using Bookish.Models;
+using Bookish.DataAccess.DbClients;
+using Bookish.DataAccess.Models;
 
-namespace Bookish.Services
+namespace Bookish.DataAccess.Services
 {
     public class UserServices
     {
         private static readonly Lazy<UserServices> Lazy = new(() => new UserServices());
 
-        public User CurrentUser;
+        public User? CurrentUser;
 
         private UserServices() { }
 
@@ -20,22 +20,16 @@ namespace Bookish.Services
             return CurrentUser != null;
         }
 
-        public bool AuthenticateInputUser()
+        public bool AuthenticateUserPlaintext(string username, string password)
         {
-            var username = Console.ReadLine();
-            var password = Console.ReadLine();
-
             var pwHash = Utils.ComputeSha256(password);
 
             var inputUser = new User(username, pwHash);
 
-            if (!AuthenticateUser(inputUser)) return false;
-
-            CurrentUser = inputUser.Copy();
-            return true;
+            return AuthenticateUser(inputUser);
         }
 
-        public static bool AuthenticateUser(User user)
+        public bool AuthenticateUser(User user)
         {
             User fetchedUser;
             try {
@@ -45,7 +39,10 @@ namespace Bookish.Services
                 return false;
             }
 
-            return fetchedUser != null && user.Pw_hash == fetchedUser.Pw_hash;
+            if (user.Pw_hash != fetchedUser.Pw_hash) return false;
+
+            CurrentUser = user.Copy();
+            return true;
         }
 
         public List<LoanedBook> GetLoanedBooks()

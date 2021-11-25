@@ -1,4 +1,4 @@
-namespace Bookish.Models
+namespace Bookish.DataAccess.Models
 {
     public class User
     {

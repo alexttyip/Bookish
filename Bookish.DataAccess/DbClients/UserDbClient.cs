@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bookish.Models;
+using Bookish.DataAccess.Models;
 using Dapper;
 
-namespace Bookish.DbClients
+namespace Bookish.DataAccess.DbClients
 {
     public static class UserDbClient
     {
