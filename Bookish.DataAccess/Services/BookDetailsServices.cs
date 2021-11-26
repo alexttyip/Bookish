@@ -7,11 +7,20 @@ namespace Bookish.DataAccess.Services
 {
     public class BookDetailsServices : ServicesBaseClass
     {
-        public BookDetailsServices(SqlConnection conn) : base(conn) { }
+        private BookDetailsDbClient _dbClient;
+        public BookDetailsServices(SqlConnection conn) : base(conn)
+        {
+            _dbClient = new BookDetailsDbClient(conn);
+        }
 
         public List<BookDetails> GetBookDetails(int bookId)
         {
-            return new BookDetailsDbClient(_conn).GetBookDetailsByBookId(bookId);
+            return _dbClient.GetBookDetailsByBookId(bookId);
+        }
+
+        public void CreateBooks(string bookTitle, List<Author> authors, string isbn, int numCopies)
+        {
+            _dbClient.CreateBooks(bookTitle, authors, isbn, numCopies);
         }
     }
 }

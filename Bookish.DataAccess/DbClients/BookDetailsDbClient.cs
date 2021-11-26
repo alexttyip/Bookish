@@ -31,5 +31,28 @@ namespace Bookish.DataAccess.DbClients
 
             return Conn.Query<BookDetails>(sql, new { bookId }).ToList();
         }
+
+        public void CreateBooks(string bookTitle, List<Author> authors, string isbn, int numCopies)
+        {
+            const string bookSql = @"INSERT INTO Books (title, ISBN) OUTPUT INSERTED.id VALUES (@bookTitle, @isbn);";
+            var bookId = Conn.QuerySingle<int>(bookSql, new { bookTitle, isbn });
+
+            const string authorSql = @"INSERT INTO Authors (name) OUTPUT INSERTED.id VALUES (@name)";
+            const string bookAuthorSql = @"INSERT INTO Books_Authors (author_id, book_id) VALUES (@authorId, @bookId)";
+
+            foreach(var author in authors) {
+                try {
+                    var authorId = Conn.QuerySingle<int>(authorSql, author);
+
+                    Conn.Execute(bookAuthorSql, new { authorId, bookId });
+                }
+                catch (SqlException) { }
+            }
+
+            const string statusSql = @"INSERT INTO Book_Statuses (book_fk) Values (@bookId)";
+            for (var i = 0; i < numCopies; i++) {
+                Conn.Execute(statusSql, new { bookId });
+            }
+        }
     }
 }

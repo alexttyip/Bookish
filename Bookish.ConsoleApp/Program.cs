@@ -29,7 +29,7 @@ namespace Bookish.ConsoleApp
                 }
 
                 switch (input.ToLower()) {
-                    case "sign in":
+                    case "login":
                         var authenticated = UserConsoleServices.AuthenticateUserWithInput();
                         Console.Out.WriteLine(authenticated ? "You're logged in!" : "Authentication failed.");
                         break;
@@ -46,8 +46,12 @@ namespace Bookish.ConsoleApp
                     case "details":
                         bookDetailsConsoleServices.ShowBookDetails();
                         break;
+                    case "create":
+                        bookDetailsConsoleServices.CreateBooks();
+                        break;
                     case "help":
-                        Console.Out.WriteLine("Available command are: `sign in`, `list all books`, `list my books`, `search title`, `exit`, and `help` (this).");
+                        var helpMessage = @"Available command are: `login`, `list all books`, `list my books`, `search`, `details`, `exit`, and `help` (this).";
+                        Console.Out.WriteLine(helpMessage);
                         break;
                     case "exit":
                         runLoop = false;
