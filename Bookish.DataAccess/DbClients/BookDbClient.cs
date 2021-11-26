@@ -6,33 +6,28 @@ using Dapper;
 
 namespace Bookish.DataAccess.DbClients
 {
-    public class BookDbClient
+    public class BookDbClient : DbClient
     {
-        private readonly SqlConnection _conn;
-
-        public BookDbClient(SqlConnection conn)
-        {
-            _conn = conn;
-        }
+        public BookDbClient(SqlConnection conn) : base(conn) { }
 
         public List<Book> GetAllBooks()
         {
-            return _conn.Query<Book>("SELECT * FROM Books;").ToList();
+            return Conn.Query<Book>("SELECT * FROM Books;").ToList();
         }
 
         public List<Book> GetAllBooksOrdered()
         {
-            return _conn.Query<Book>("SELECT * FROM Books ORDER BY title ASC;").ToList();
+            return Conn.Query<Book>("SELECT * FROM Books ORDER BY title ASC;").ToList();
         }
 
         public Book GetABook(int id)
         {
-            return _conn.Query<Book>("SELECT * FROM Books WHERE id = @id;", new { id }).First();
+            return Conn.Query<Book>("SELECT * FROM Books WHERE id = @id;", new { id }).First();
         }
 
         public void InsertBook(Book book)
         {
-            _conn.Execute("INSERT INTO Books (title, ISBN) VALUES (@Title, @Isbn)", book);
+            Conn.Execute("INSERT INTO Books (title, ISBN) VALUES (@Title, @Isbn)", book);
         }
     }
 }

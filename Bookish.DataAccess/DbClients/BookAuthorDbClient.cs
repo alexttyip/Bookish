@@ -6,14 +6,9 @@ using Dapper;
 
 namespace Bookish.DataAccess.DbClients
 {
-    public class BookAuthorDbClient
+    public class BookAuthorDbClient : DbClient
     {
-        private readonly SqlConnection _conn;
-
-        public BookAuthorDbClient(SqlConnection conn)
-        {
-            _conn = conn;
-        }
+        public BookAuthorDbClient(SqlConnection conn) : base(conn) { }
 
         public List<BookAuthor> Search(string search)
         {
@@ -30,7 +25,7 @@ namespace Bookish.DataAccess.DbClients
                    OR A.name LIKE @search;
             ";
 
-            return _conn.Query<BookAuthor>(query, new { search = search + '%' }).ToList();
+            return Conn.Query<BookAuthor>(query, new { search = search + '%' }).ToList();
         }
     }
 }

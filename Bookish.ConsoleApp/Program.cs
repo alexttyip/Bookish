@@ -9,16 +9,18 @@ namespace Bookish.ConsoleApp
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Type `help` to show available commands.");
+            Console.WriteLine("\nType `help` to show available commands.");
 
             var userService = UserServices.Instance;
+            var conn = Database.Instance.Connection;
 
-            var bookConsoleServices = new BookConsoleServices(Database.Instance.Connection);
-            var bookAuthorConsoleServices = new BookAuthorConsoleServices(Database.Instance.Connection);
+            var bookConsoleServices = new BookConsoleServices(conn);
+            var bookAuthorConsoleServices = new BookAuthorConsoleServices(conn);
+            var bookDetailsConsoleServices = new BookDetailsConsoleServices(conn);
 
             var runLoop = true;
             while (runLoop) {
-                Console.Out.WriteLine();
+                Console.Out.Write("\n>>> ");
                 var input = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(input)) {
@@ -40,6 +42,9 @@ namespace Bookish.ConsoleApp
                         break;
                     case "search":
                         bookAuthorConsoleServices.SearchTitles();
+                        break;
+                    case "details":
+                        bookDetailsConsoleServices.ShowBookDetails();
                         break;
                     case "help":
                         Console.Out.WriteLine("Available command are: `sign in`, `list all books`, `list my books`, `search title`, `exit`, and `help` (this).");

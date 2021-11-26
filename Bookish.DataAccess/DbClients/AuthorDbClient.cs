@@ -6,29 +6,23 @@ using Dapper;
 
 namespace Bookish.DataAccess.DbClients
 {
-    public class AuthorDbClient
+    public class AuthorDbClient : DbClient
     {
+        public AuthorDbClient(SqlConnection conn) : base(conn) { }
 
-        private SqlConnection _conn;
-
-        public AuthorDbClient(SqlConnection conn)
+        public  List<Author> GetAllAuthors()
         {
-            _conn = conn;
+            return Conn.Query<Author>("SELECT * FROM Authors;").ToList();
         }
 
-        public static List<Author> GetAllAuthors()
+        public  Author GetAnAuthor(int id)
         {
-            return Database.Instance.Connection.Query<Author>("SELECT * FROM Authors;").ToList();
+            return Conn.Query<Author>("SELECT * FROM Authors WHERE id = @id;", new { id }).First();
         }
 
-        public static Author GetAnAuthor(int id)
+        public  void InsertAuthor(Author author)
         {
-            return Database.Instance.Connection.Query<Author>("SELECT * FROM Authors WHERE id = @id;", new { id }).First();
-        }
-
-        public static void InsertAuthor(Author author)
-        {
-            Database.Instance.Connection.Execute("INSERT INTO Authors (name) VALUES (@Name)", author);
+            Conn.Execute("INSERT INTO Authors (name) VALUES (@Name)", author);
         }
     }
 }

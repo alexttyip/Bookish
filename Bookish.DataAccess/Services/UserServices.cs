@@ -10,8 +10,12 @@ namespace Bookish.DataAccess.Services
         private static readonly Lazy<UserServices> Lazy = new(() => new UserServices());
 
         public User? CurrentUser;
+        private readonly UserDbClient _dbClient;
 
-        private UserServices() { }
+        private UserServices()
+        {
+            _dbClient = new UserDbClient(Database.Instance.Connection);
+        }
 
         public static UserServices Instance => Lazy.Value;
 
@@ -33,7 +37,7 @@ namespace Bookish.DataAccess.Services
         {
             User fetchedUser;
             try {
-                fetchedUser = UserDbClient.GetAUser(user.Username);
+                fetchedUser = _dbClient.GetAUser(user.Username);
             }
             catch (UserDoesNotExistException) {
                 return false;
@@ -50,7 +54,7 @@ namespace Bookish.DataAccess.Services
             if (CurrentUser == null)
                 throw new UnauthenticatedUserException();
 
-            return UserDbClient.GetBooksLoanedByUser(CurrentUser);
+            return _dbClient.GetBooksLoanedByUser(CurrentUser);
         }
     }
 

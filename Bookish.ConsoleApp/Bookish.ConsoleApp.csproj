@@ -5,11 +5,11 @@
         <TargetFramework>net5.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latestmajor</LangVersion>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Bookish.DataAccess\Bookish.DataAccess.csproj"/>
+        <ProjectReference Include="..\Bookish.DataAccess\Bookish.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>

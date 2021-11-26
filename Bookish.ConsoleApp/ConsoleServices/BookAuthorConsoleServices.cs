@@ -4,14 +4,9 @@ using Bookish.DataAccess.Services;
 
 namespace Bookish.ConsoleApp.ConsoleServices
 {
-    public class BookAuthorConsoleServices
+    public class BookAuthorConsoleServices : ConsoleServicesBaseClass
     {
-        private readonly SqlConnection _conn;
-
-        public BookAuthorConsoleServices(SqlConnection conn)
-        {
-            _conn = conn;
-        }
+        public BookAuthorConsoleServices(SqlConnection conn) : base(conn) { }
 
         public void SearchTitles()
         {
@@ -19,7 +14,7 @@ namespace Bookish.ConsoleApp.ConsoleServices
 
             var title = Console.ReadLine();
 
-            var books = new BookAuthorServices(_conn).Search(title);
+            var books = new BookAuthorServices(Conn).Search(title);
 
             foreach(var book in books) Console.WriteLine(book.ToString());
         }

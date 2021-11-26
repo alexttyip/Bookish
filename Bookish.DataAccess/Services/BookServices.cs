@@ -5,14 +5,9 @@ using Bookish.DataAccess.Models;
 
 namespace Bookish.DataAccess.Services
 {
-    public class BookServices
+    public class BookServices : ServicesBaseClass
     {
-        private readonly SqlConnection _conn;
-
-        public BookServices(SqlConnection conn)
-        {
-            _conn = conn;
-        }
+        public BookServices(SqlConnection conn) : base(conn) { }
 
         public List<Book> GetAllBooks()
         {

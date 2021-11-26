@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using Bookish.DataAccess.Models;
 using Dapper;
 
 namespace Bookish.DataAccess.DbClients
 {
-    public static class UserDbClient
+    public class UserDbClient : DbClient
     {
-        public static List<User> GetAllUsers()
+        public UserDbClient(SqlConnection conn) : base(conn) { }
+
+        public List<User> GetAllUsers()
         {
-            return Database.Instance.Connection.Query<User>("SELECT * FROM Users;").ToList();
+            return Conn.Query<User>("SELECT * FROM Users;").ToList();
         }
 
-        public static User GetAUser(string username)
+        public User GetAUser(string username)
         {
-            var users = Database.Instance.Connection.Query<User>("SELECT * FROM Users WHERE username = @username;", new { username }).ToList();
+            var users = Conn.Query<User>("SELECT * FROM Users WHERE username = @username;", new { username }).ToList();
 
             try {
                 return users.First();
@@ -25,12 +28,12 @@ namespace Bookish.DataAccess.DbClients
             }
         }
 
-        public static void InsertUser(User user)
+        public void InsertUser(User user)
         {
-            Database.Instance.Connection.Execute("INSERT INTO Users (username, pw_hash) VALUES (@Username, @Pw_hash)", user);
+            Conn.Execute("INSERT INTO Users (username, pw_hash) VALUES (@Username, @Pw_hash)", user);
         }
 
-        public static List<LoanedBook> GetBooksLoanedByUser(User user)
+        public List<LoanedBook> GetBooksLoanedByUser(User user)
         {
             const string query = @"
                     SELECT B.*, Bs.due
@@ -39,7 +42,7 @@ namespace Bookish.DataAccess.DbClients
                                   on B.id = Bs.book_fk AND Bs.user_fk = 1
               ";
 
-            return Database.Instance.Connection.Query<LoanedBook>(query).ToList();
+            return Conn.Query<LoanedBook>(query).ToList();
         }
     }
 

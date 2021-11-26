@@ -13,6 +13,7 @@ namespace Bookish.DataAccess.Services
         {
             _conn = conn;
         }
+
         public List<BookAuthor> Search(string? searchTerm)
         {
             return new BookAuthorDbClient(_conn).Search(searchTerm ?? "");
